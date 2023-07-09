@@ -17,19 +17,24 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
+      - name: Run Python script and save output
+        run: |
+          python path/to/your_script.py > output-${{ matrix.python-version }}.txt
+          mv output-${{ matrix.python-version }}.txt hello-${{ matrix.python-version }}.txt
       - uses: actions/upload-artifact@v3
         with:
-          path: hello.txt
+          name: output-artifact-${{ matrix.python-version }}
+          path: hello-${{ matrix.python-version }}.txt
 
   download:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Download artifact
+      - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          name: artifact
-          path: downloaded-artifact
+          name: output-artifact-${{ matrix.python-version }}
+          path: downloaded-artifact-${{ matrix.python-version }}
       - name: List artifact contents
-        run: ls downloaded-artifact
+        run: ls downloaded-artifact-${{ matrix.python-version }}
