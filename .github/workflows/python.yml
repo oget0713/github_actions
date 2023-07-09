@@ -19,8 +19,7 @@ jobs:
         run: python -c "import sys; print(sys.version)"
       - name: Run Python script and save output
         run: |
-          python path/to/your_script.py > output-${{ matrix.python-version }}.txt
-          mv output-${{ matrix.python-version }}.txt hello-${{ matrix.python-version }}.txt
+          python -c "import sys; print(sys.version)" > output-${{ matrix.python-version }}.txt
       - uses: actions/upload-artifact@v3
         with:
           name: output-artifact-${{ matrix.python-version }}
